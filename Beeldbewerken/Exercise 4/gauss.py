@@ -1,7 +1,7 @@
 # By Jayke and Richard
-from scipy.ndimage.filters import convolve
+from scipy.ndimage import convolve
 from pylab import *
-from numpy import zeros
+from mpl_toolkits.mplot3d import Axes3D
 
 def f(s, n, x, y):
    """Gaussian function"""
@@ -34,18 +34,35 @@ def gauss(s):
             if debug: print("%.4f" % gaussFilter[i][j]),
         if debug: print '\n'
     
-    return gaussFilter / gaussFilter.sum()
+    # All values between 0 and 1
+    return gaussFilter #/ gaussFilter.sum()
     
 F = imread('cameraman.png') 
 
 B = gauss(3)
 
+figure(1)
+fig = figure()
+
+X = arange(0, B.shape[0])
+Y = arange(0, B.shape[1])
+
+X, Y = meshgrid(X, Y)
+
+ax = Axes3D(fig)
+
+surf = ax.plot_surface(X, Y, B, rstride=1, cstride=1, cmap=cm.jet, linewidth=0, antialiased=False)
+
+figure(2)
+subplot(121)
 imshow(B, cmap='gray')
-show()
-#G = convolve(F, B, mode='nearest')
-
-subplot(111)
-imshow(F, cmap ='gray')
-
+G = convolve(F, B, mode='nearest')
 subplot(122)
 imshow(G, cmap ='gray') 
+show()
+#subplot(111)
+#imshow(F, cmap ='gray')
+
+#subplot(122)
+
+#show()
