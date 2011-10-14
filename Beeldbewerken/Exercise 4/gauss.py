@@ -1,3 +1,4 @@
+# By Jayke and Richard
 from scipy.ndimage.filters import convolve
 from pylab import *
 from numpy import zeros
