@@ -32,7 +32,7 @@ def gauss(s):
             if debug: print("%.4f" % gaussFilter[i][j]),
         if debug: print '\n'
     
-F = imread('cameraman.png')
+F = imread('cameraman.png') 
 
 G = convolve(F, gauss(2), mode='nearest')
 
