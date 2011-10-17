@@ -1,5 +1,4 @@
 from pylab import *
-#Stop fucking around
 x = arange(-100,101)
 y = arange(-100,101)
 
