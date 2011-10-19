@@ -3,6 +3,7 @@ from scipy.ndimage import convolve, convolve1d
 from pylab import figure, subplot, imread, ceil, zeros, pi, e, arange, \
 meshgrid, cm, imshow, show
 from mpl_toolkits.mplot3d import Axes3D
+from sys import argv, exit
 
 # Return value of Gauss on given x and y with scale s and size of n (= 6 * s)
 def f(s, n, x, y):
@@ -50,49 +51,62 @@ def gauss1(s):
             
     # All values between 0 and 1
     return gaussFilter / gaussFilter.sum()
-   
+
+if len(argv) < 4:
+    print "Usage: python gauss.py [s] ['1D'|'2D'] [1|0 : 1 shows output images,\
+           0 does not]"
+    exit(1)
+           
+s = argv[1]
+method = argv[2]
+show_out = argv[3]
 Image = imread('cameraman.png')
 
-Gs = gauss(3)
-Gsx = gauss1(3)
-        
-fig = figure()
+# Convolution with gauss function
+if method == '2D':
+    Gs = gauss(3)
+    G = convolve(Image, Gs, mode='nearest')
+else:
+    Gsx = gauss1(3)
+    G2 = convolve1d(Image, Gsx, axis=0, mode='nearest')
+    G2 = convolve1d(G2, Gsx, axis=1, mode='nearest')
 
-X = arange(0, Gs.shape[0])
-Y = arange(0, Gs.shape[1])
+if show_out == 1:
+    if method == '2D':
+        figure(1)
+        X = arange(0, Gs.shape[0])
+        Y = arange(0, Gs.shape[1])
 
-# create meshgrid
-X, Y = meshgrid(X, Y)
+        # create meshgrid
+        X, Y = meshgrid(X, Y)
 
-# matplot lib version < 1.0 uses Axes3D
-ax = Axes3D(fig)
+        # matplot lib version < 1.0 uses Axes3D
+        ax = Axes3D(fig)
 
-surf = ax.plot_surface(X, Y, Gs, rstride=1, cstride=1, cmap=cm.jet, linewidth=0, antialiased=False)
+        surf = ax.plot_surface(X, Y, Gs, rstride=1, cstride=1, cmap=cm.jet, \
+                                linewidth=0, antialiased=False)        
+    
+    figure(2)
 
-figure(2)
+    # Original image
+    subplot(211)
+    imshow(Image, cmap ='gray')
 
-# Convolution with gauss function (B)
-G = convolve(Image, Gs, mode='nearest')
-G2 = convolve1d(Image, Gsx, axis=0, mode='nearest')
-G2 = convolve1d(G2, Gsx, axis=1, mode='nearest')
+    if method == '2D':
+        # Mask 1
+        subplot(223)
+        imshow(Gs, cmap='gray')
 
-# Original image
-subplot(421)
-imshow(Image, cmap ='gray')
+        # Image with mask 1
+        subplot(224)
+        imshow(G, cmap ='gray')
+    else:
+        # Mask 2 in one direction
+        subplot(223)
+        imshow((Gsx, Gsx), cmap='gray')
 
-# Mask 1
-subplot(423)
-imshow(Gs, cmap='gray')
-
-# Image with mask 1
-subplot(424)
-imshow(G, cmap ='gray') 
-
-# Mask 2 in one direction
-subplot(425)
-imshow((Gsx, Gsx), cmap='gray')
-
-# Image with mask 2
-subplot(426)
-imshow(G2, cmap ='gray')
-show()
+        # Image with mask 2
+        subplot(224)
+        imshow(G2, cmap ='gray')
+    
+    show()
