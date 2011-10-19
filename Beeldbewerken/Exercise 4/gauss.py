@@ -12,7 +12,7 @@ def f(s, n, x, y):
                                                               
 # Return value of Gauss on given x and y with scale s and size of n (= 6 * s)
 def f1(s, n, x):
-   """Gaussian function"""
+   """1-D Gaussian function"""
    return 1 / (2 * pi * (s ** 2)) * (e ** -(((x - n / 2)**2) / (2 * (s ** 2))))
         
 # Gaussian filter with a kernel of 6s - 1 values
@@ -55,7 +55,7 @@ Image = imread('cameraman.png')
 
 Gs = gauss(3)
 Gsx = gauss1(3)
-
+        
 fig = figure()
 
 X = arange(0, Gs.shape[0])
@@ -74,25 +74,25 @@ figure(2)
 # Convolution with gauss function (B)
 G = convolve(Image, Gs, mode='nearest')
 G2 = convolve1d(Image, Gsx, axis=0, mode='nearest')
-G2 = convolve1d(Image, Gsx, axis=1, mode='nearest')
+G2 = convolve1d(G2, Gsx, axis=1, mode='nearest')
 
 # Original image
-subplot(311)
+subplot(421)
 imshow(Image, cmap ='gray')
 
 # Mask 1
-subplot(323)
+subplot(423)
 imshow(Gs, cmap='gray')
 
 # Image with mask 1
-subplot(324)
+subplot(424)
 imshow(G, cmap ='gray') 
 
 # Mask 2 in one direction
-subplot(325)
+subplot(425)
 imshow((Gsx, Gsx), cmap='gray')
 
 # Image with mask 2
-subplot(326)
-imshow(G2, cmap ='gray') 
+subplot(426)
+imshow(G2, cmap ='gray')
 show()
