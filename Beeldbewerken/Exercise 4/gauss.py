@@ -52,24 +52,37 @@ def gauss1(s):
     # All values between 0 and 1
     return gaussFilter / gaussFilter.sum()
 
+def gD(F, s, iorder, jorder):
+    '''Create the Gaussian derivative convolution of image F.'''
+    image = F
+    
+    return image
+
 if len(argv) < 4:
-    print "Usage: python gauss.py [s] ['1D'|'2D'] [1|0 : 1 shows output images,\
-           0 does not]"
+    print "Usage: python gauss.py [s] ['1D'|'2D'|'gD'] [1|0 : 1 shows output \
+           images, 0 does not]"
     exit(1)
            
 s = argv[1]
 method = argv[2]
-show_out = argv[3]
+show_out = int(argv[3])
 Image = imread('cameraman.png')
 
 # Convolution with gauss function
 if method == '2D':
     Gs = gauss(3)
     G = convolve(Image, Gs, mode='nearest')
-else:
+elif method == '1D':
     Gsx = gauss1(3)
     G2 = convolve1d(Image, Gsx, axis=0, mode='nearest')
     G2 = convolve1d(G2, Gsx, axis=1, mode='nearest')
+elif method == 'gD':
+    iorder = 1
+    jorder = 1
+    result = gD(Image, s, iorder, jorder)
+else:
+    print "Invalid method"
+    exit(1)
 
 if show_out == 1:
     if method == '2D':
@@ -100,7 +113,7 @@ if show_out == 1:
         # Image with mask 1
         subplot(224)
         imshow(G, cmap ='gray')
-    else:
+    elif method == '1D':
         # Mask 2 in one direction
         subplot(223)
         imshow((Gsx, Gsx), cmap='gray')
@@ -108,5 +121,8 @@ if show_out == 1:
         # Image with mask 2
         subplot(224)
         imshow(G2, cmap ='gray')
+    else:
+        subplot(212)
+        imshow(result, cmap='gray')
     
     show()
