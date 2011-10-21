@@ -5,24 +5,30 @@ meshgrid, cm, imshow, show
 from mpl_toolkits.mplot3d import Axes3D
 from sys import argv, exit
 
-# Return value of Gauss on given x and y with scale s and size of n (= 6 * s)
 def f(s, n, x, y):
-   """Gaussian function"""
+   """Gaussian function. Return value of Gauss on given x and y with scale s 
+   and size of n (= 6 * s)."""
    return 1 / (2 * pi * (s ** 2)) * (e ** -(((x - n / 2)**2 + (y - n / 2)**2 ) 
                                                               / (2 * (s ** 2))))
-                                                              
-# Return value of Gauss on given x and y with scale s and size of n (= 6 * s)
+
 def f1(s, n, x):
-   """1-D Gaussian function"""
+   """1-D Gaussian function. Return value of Gauss on given x with scale s and 
+   size of n (= 6 * s)."""
+   return 1 / (2 * pi * (s ** 2)) * (e ** -(((x - n / 2)**2) / (2 * (s ** 2))))
+   
+def f1_1(s, n, x):
+   """1-D Gaussian function, first derivative"""
+   return 1 / (2 * pi * (s ** 2)) * (e ** -(((x - n / 2)**2) / (2 * (s ** 2))))
+   
+def f1_2(s, n, x):
+   """1-D Gaussian function, second derivative"""
    return 1 / (2 * pi * (s ** 2)) * (e ** -(((x - n / 2)**2) / (2 * (s ** 2))))
         
-# Gaussian filter with a kernel of 6s - 1 values
 def gauss(s):
-    """Contruct a 2-D Gaussian mask"""        
+    """Contruct a 2-D Gaussian mask with a kernel of 6s - 1 values"""        
     # for sufficient result use ceil(6s) by ceil(6s) for a gaussian filter
     # read: http://en.wikipedia.org/wiki/Gaussian_blur for more explaination     
     n = int(ceil(6 * s) + 1)
-    s = float(s)
     
     # n * n zero matrix of floats
     gaussFilter = zeros((n, n), dtype=float)
@@ -35,7 +41,7 @@ def gauss(s):
     # All values between 0 and 1
     return gaussFilter / gaussFilter.sum()
     
-def gauss1(s):
+def gauss1(s, func):
     '''Construct a 1-D Gaussian mask''' 
     # for sufficient result use ceil(6s) by ceil(6s) for a gaussian filter
     # read: http://en.wikipedia.org/wiki/Gaussian_blur for more explaination     
@@ -47,38 +53,48 @@ def gauss1(s):
 
     # fill gaussFilter[] with gaussian values on x
     for x in range(n):
-        gaussFilter[x] = f1(s, n, x)
+        gaussFilter[x] = func(s, n, x)
             
     # All values between 0 and 1
     return gaussFilter / gaussFilter.sum()
 
 def gD(F, s, iorder, jorder):
     '''Create the Gaussian derivative convolution of image F.'''
-    image = F
+    functions = [f1, f1_1, f1_2]
+    s = float(s)
     
-    return image
+    filt_x = gauss1(s, functions[iorder])
+    filt_y = gauss1(s, functions[jorder])
+    
+    gaussFilter = zeros((len(filt_x), len(filt_x)))
+    
+    for i in range(len(filt_x)):
+        gaussFilter[i] = filt_y * filt_x[i]
+            
+    gaussFilter /= gaussFilter.sum()
+    
+    return convolve(F, gaussFilter, mode='nearest')
 
 if len(argv) < 4:
     print "Usage: python gauss.py [s] ['1D'|'2D'|'gD'] [1|0 : 1 shows output \
            images, 0 does not]"
     exit(1)
            
-s = argv[1]
+s = float(argv[1])
 method = argv[2]
 show_out = int(argv[3])
 Image = imread('cameraman.png')
 
-# Convolution with gauss function
 if method == '2D':
     Gs = gauss(3)
     G = convolve(Image, Gs, mode='nearest')
 elif method == '1D':
-    Gsx = gauss1(3)
+    Gsx = gauss1(3, f1)
     G2 = convolve1d(Image, Gsx, axis=0, mode='nearest')
     G2 = convolve1d(G2, Gsx, axis=1, mode='nearest')
 elif method == 'gD':
-    iorder = 1
-    jorder = 1
+    iorder = 0
+    jorder = 0
     result = gD(Image, s, iorder, jorder)
 else:
     print "Invalid method"
