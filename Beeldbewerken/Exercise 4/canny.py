@@ -4,14 +4,16 @@ from pylab import figure, subplot, imread, imshow, show
 
 def canny(F, s):
     '''Apply a canny edge detector to the image.'''
-    gaussian_blur = gD(F, s, 2, 2)
-    threshold = 0.5
+    blurred = gD(F, s, 2, 2)
     
-    for x in range(len(gaussian_blur[0])):
-        for y in range(len(gaussian_blur)):   
-            gaussian_blur[x][y] = zero_crossings(gaussian_blur, x, y)
+    figure()
+    imshow(blurred, cmap='gray')
     
-    return gaussian_blur
+    for x in range(len(blurred[0])):
+        for y in range(len(blurred)):
+            blurred[x][y] = zero_crossings(blurred, x, y)
+    
+    return blurred
     
 def zero_crossings(image, x, y):
     '''Check if there are positive and negative pixels on either side of a
@@ -25,8 +27,8 @@ def zero_crossings(image, x, y):
     l_below = image[x-1][y+1] if inImage(image, x-1, y+1) else 0
     r_below = image[x+1][y+1] if inImage(image, x+1, y+1) else 0
     
-    if (left * right < 0) or (above * below < 0) or \
-       (l_above * r_below < 0) or (l_below * r_above < 0):
+    if (left * right <= 0) or (above * below <= 0) or \
+       (l_above * r_below <= 0) or (l_below * r_above <= 0):
         return image[x][y]
     else:
         return 0       
@@ -41,6 +43,7 @@ if len(argv) != 2:
 s = float(argv[1])
 Image = imread('cameraman.png')
 result = canny(Image, s)
+#result = gD(Image, s, 2, 2)
 
 figure()
 subplot(121)
