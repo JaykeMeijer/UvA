@@ -18,17 +18,19 @@ def f1(s, n, x):
    
 def f1_1(s, n, x):
    """1-D Gaussian function, first derivative"""
-   return 1 / (2 * pi * (s ** 2)) * (e ** -(((x - n / 2)**2) / (2 * (s ** 2))))
+   return 1 / (2 * pi * s ** 4) * (-x * e ** -(x ** 2 / (2 * s ** 2)))
    
 def f1_2(s, n, x):
    """1-D Gaussian function, second derivative"""
-   return 1 / (2 * pi * (s ** 2)) * (e ** -(((x - n / 2)**2) / (2 * (s ** 2))))
+   return 1 / (2 * pi * s ** 6) * \
+            (-(x ** 2 - s ** 2) * e ** -(x ** 2 / (2 * s ** 2)))
         
 def gauss(s):
     """Contruct a 2-D Gaussian mask with a kernel of 6s - 1 values"""        
     # for sufficient result use ceil(6s) by ceil(6s) for a gaussian filter
     # read: http://en.wikipedia.org/wiki/Gaussian_blur for more explaination     
     n = int(ceil(6 * s) + 1)
+    s = float(s)
     
     # n * n zero matrix of floats
     gaussFilter = zeros((n, n), dtype=float)
@@ -75,7 +77,7 @@ def gD(F, s, iorder, jorder):
     
     return convolve(F, gaussFilter, mode='nearest')
 
-if len(argv) < 4:
+if len(argv) != 4:
     print "Usage: python gauss.py [s] ['1D'|'2D'|'gD'] [1|0 : 1 shows output \
            images, 0 does not]"
     exit(1)
@@ -93,8 +95,8 @@ elif method == '1D':
     G2 = convolve1d(Image, Gsx, axis=0, mode='nearest')
     G2 = convolve1d(G2, Gsx, axis=1, mode='nearest')
 elif method == 'gD':
-    iorder = 0
-    jorder = 0
+    iorder = 2
+    jorder = 2
     result = gD(Image, s, iorder, jorder)
 else:
     print "Invalid method"
@@ -102,7 +104,7 @@ else:
 
 if show_out == 1:
     if method == '2D':
-        figure(1)
+        fig = figure()
         X = arange(0, Gs.shape[0])
         Y = arange(0, Gs.shape[1])
 
