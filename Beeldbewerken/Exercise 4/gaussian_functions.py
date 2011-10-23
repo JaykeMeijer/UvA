@@ -25,8 +25,8 @@ def gauss(s):
     """Contruct a 2-D Gaussian mask with a kernel of 6s - 1 values"""        
     # for sufficient result use ceil(6s) by ceil(6s) for a gaussian filter
     # read: http://en.wikipedia.org/wiki/Gaussian_blur for more explaination     
-    n = int(ceil(6 * s) + 1)
     s = float(s)
+    n = int(ceil(6 * s) + 1)
     
     # n * n zero matrix of floats
     gaussFilter = zeros((n, n), dtype=float)
@@ -43,8 +43,8 @@ def gauss1(s, func):
     '''Construct a 1-D Gaussian mask''' 
     # for sufficient result use ceil(6s) by ceil(6s) for a gaussian filter
     # read: http://en.wikipedia.org/wiki/Gaussian_blur for more explaination     
-    n = int(ceil(6 * s) + 1)
     s = float(s)
+    n = int(ceil(6 * s) + 1)
     
     # n * n zero matrix of floats
     gaussFilter = zeros((n), dtype=float)
