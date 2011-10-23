@@ -4,7 +4,7 @@ from pylab import figure, subplot, imread, ceil, zeros, pi, e, arange, \
 meshgrid, cm, imshow, show
 from mpl_toolkits.mplot3d import Axes3D
 from sys import argv, exit
-from gaussian_functions import gauss, gauss1, gD
+from gaussian_functions import gauss, gauss1, gD, f1, f1_1, f1_2
 
 if len(argv) != 4:
     print "Usage: python gauss.py [s] ['1D'|'2D'|'gD'] [1|0 : 1 shows output \

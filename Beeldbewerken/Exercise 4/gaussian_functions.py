@@ -1,5 +1,5 @@
 from scipy.ndimage import convolve
-from pylab import ceil, zeros, pi, e
+from pylab import ceil, zeros, pi, e, exp, sqrt, dot, array
 
 def f(s, n, x, y):
    """Gaussian function. Return value of Gauss on given x and y with scale s 
@@ -32,8 +32,8 @@ def gauss(s):
     gaussFilter = zeros((n, n), dtype=float)
 
     # fill gaussFilter[][] with gaussian values on x and y
-    for x in range(n):
-        for y in range(n):
+    for x in xrange(n):
+        for y in xrange(n):
             gaussFilter[x][y] = f(s, n, x, y)
             
     # All values between 0 and 1
@@ -44,14 +44,15 @@ def gauss1(s, func):
     # for sufficient result use ceil(6s) by ceil(6s) for a gaussian filter
     # read: http://en.wikipedia.org/wiki/Gaussian_blur for more explaination     
     s = float(s)
+    r = int(ceil(3 * s))
     n = int(ceil(6 * s) + 1)
     
     # n * n zero matrix of floats
     gaussFilter = zeros((n), dtype=float)
 
     # fill gaussFilter[] with gaussian values on x
-    for x in range(n):
-        gaussFilter[x] = func(s, n, x)
+    for x in xrange(n):
+        gaussFilter[x] = func(s, n, x - r)
             
     # All values between 0 and 1
     return gaussFilter / gaussFilter.sum()
@@ -66,8 +67,9 @@ def gD(F, s, iorder, jorder):
     
     gaussFilter = zeros((len(filt_x), len(filt_x)))
     
-    for i in range(len(filt_x)):
-        gaussFilter[i] = filt_y * filt_x[i]
+    for x in range(len(filt_x)):
+        for y in range(len(filt_y)):
+            gaussFilter[x][y] = filt_y[y] * filt_x[x]
             
     gaussFilter /= gaussFilter.sum()
     
