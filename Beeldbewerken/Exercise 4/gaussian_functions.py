@@ -10,7 +10,7 @@ def f(s, n, x, y):
 def f1(s, n, x):
    """1-D Gaussian function. Return value of Gauss on given x with scale s and 
    size of n (= 6 * s)."""
-   return 1 / (2 * pi * (s ** 2)) * (e ** -(((x - n / 2)**2) / (2 * (s ** 2))))
+   return 1 / (sqrt(2 * pi * (s ** 2))) * (e ** -((x**2) / (2 * (s ** 2))))
    
 def f1_1(s, n, x):
    """1-D Gaussian function, first derivative"""

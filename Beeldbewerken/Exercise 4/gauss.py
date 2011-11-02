@@ -7,8 +7,8 @@ from sys import argv, exit
 from gaussian_functions import gauss, gauss1, gD, f1, f1_1, f1_2
 
 if len(argv) != 4:
-    print "Usage: python gauss.py [s] ['1D'|'2D'|'gD'] [1|0 : 1 shows output \
-           images, 0 does not]"
+    print "Usage: python gauss.py s '1D'|'2D'|'gD' 1|0 (1 shows output \
+           images, 0 does not)"
     exit(1)
            
 s = float(argv[1])
