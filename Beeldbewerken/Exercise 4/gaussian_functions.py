@@ -7,16 +7,16 @@ def f(s, n, x, y):
    return 1 / (2 * pi * (s ** 2)) * (e ** -(((x - n / 2)**2 + (y - n / 2)**2 ) 
                                                               / (2 * (s ** 2))))
 
-def f1(s, n, x):
+def f1(s, x):
    """1-D Gaussian function. Return value of Gauss on given x with scale s and 
    size of n (= 6 * s)."""
    return 1 / (sqrt(2 * pi * (s ** 2))) * (e ** -((x**2) / (2 * (s ** 2))))
    
-def f1_1(s, n, x):
+def f1_1(s, x):
    """1-D Gaussian function, first derivative"""
    return 1 / (2 * pi * s ** 4) * (-x * e ** -(x ** 2 / (2 * s ** 2)))
    
-def f1_2(s, n, x):
+def f1_2(s, x):
    """1-D Gaussian function, second derivative"""
    return 1 / (2 * pi * s ** 6) * \
             (-(x ** 2 - s ** 2) * e ** -(x ** 2 / (2 * s ** 2)))
@@ -51,11 +51,10 @@ def gauss1(s, func):
     gaussFilter = zeros((n), dtype=float)
 
     # fill gaussFilter[] with gaussian values on x
-    for x in xrange(n):
-        gaussFilter[x] = func(s, n, x - r)
-            
-    # All values between 0 and 1
-    return gaussFilter / gaussFilter.sum()
+    for x in range(n):
+        gaussFilter[x] = func(s, x - r)
+    
+    return gaussFilter
 
 def gD(F, s, iorder, jorder):
     '''Create the Gaussian derivative convolution of image F.'''
@@ -71,6 +70,6 @@ def gD(F, s, iorder, jorder):
         for y in range(len(filt_y)):
             gaussFilter[x][y] = filt_y[y] * filt_x[x]
             
-    gaussFilter /= gaussFilter.sum()
+    gaussFilter
     
     return convolve(F, gaussFilter, mode='nearest')

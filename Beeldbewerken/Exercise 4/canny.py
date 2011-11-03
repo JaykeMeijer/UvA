@@ -43,6 +43,8 @@ def canny(F, s, high_threshold, low_threshold):
                 after_nm[x][y] = G[x][y]
     
     # Hysteresis thresholding
+    high_threshold *= (after_nm.max() - after_nm.min()) / 255
+    low_threshold *= (after_nm.max() - after_nm.min()) / 255
     after_threshold = zeros(after_nm.shape, dtype = int)
     
     def follow_edge(x, y):
