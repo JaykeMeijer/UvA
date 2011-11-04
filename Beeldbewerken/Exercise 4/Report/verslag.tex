@@ -40,6 +40,13 @@ A performance increase for the Gaussian Convolution can be gained by
 applying the convolution first in one direction and then in the
 second. This way, we only have to calculate once in the x-direction and
 once in the y-direction of the filter, instead of for each x and y.\\
+That this is possible can be seen in the following proof:\\
+\\
+$\frac{\delta}{\delta x}\frac{\delta}{\delta y}G_{2D} 
+= \frac{\delta}{\delta x}(\frac{\delta}{\delta x}(G_{1D}(x) * G_{1D}(y)) 
+= \frac{\delta}{\delta x}(G_{1D}(x) * \frac{\delta}{\delta y}G_{1D}(y))
+= \frac{\delta}{\delta x}G_{1D}(x) * \frac{\delta}{\delta y}G_{1D}(y)$\\
+\\
 This means that for each $s$ the order $\mathcal{O}(s)$. This is because
 the Gaussian function has to be applied $n$ times per direction, with
 $n = ceil(6s + 1)$. This means that the total times the Gaussian function
@@ -62,7 +69,7 @@ $f'(x) = \frac{1}{2\pi s^4} * (-xe^{-\frac{x^2}{2s^2}})$\\
 $f''(x) = \frac{1}{2\pi s^6} * (-x^2 - s^2) * e^{-\frac{x^2}{2s^2}}$
 
 We can apply these functions in different levels on the image, creating a
-so-called `2-jet´:
+so-called `2-jet':
 \begin{figure}[H]
 	\includegraphics[scale=0.3]{jet.png}
 	\caption{2-Jet}
