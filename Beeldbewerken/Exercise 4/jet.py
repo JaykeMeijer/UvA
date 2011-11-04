@@ -2,7 +2,7 @@
 # Authors: Jayke Meijer (6049885) and Richard Torenvliet (6138861)
 from scipy.ndimage import convolve, convolve1d
 from pylab import figure, show, zeros, average, plot, imread, legend, subplot,\
-imshow, title, delaxes
+imshow, title, axis
 from sys import argv, exit
 from gaussian_functions import gD
 
@@ -28,6 +28,7 @@ figure()
 for i in xrange(1, 10):
     if i in [1, 4, 5, 7, 8, 9]:
         subplot(330 + i)
+        axis('off')
         imshow(Images[j], cmap='gray')
         title(labels[j])
 

@@ -15,18 +15,18 @@ A = 1; B = 2; V = 6*pi/201; W = 4*pi/201;
 F = A*sin(V*X) + B*cos(W*Y)
 #f(x,y)=Asin(Vx)+Bcos(Wy)
 Fx = A * V * cos(V * X)
-Fy = -(B * W * sin(W * X))
+Fy = -(B * W * sin(W * Y))
 
-FFx = -A * V ** 2 * sin(V * XX)  # this is soo wrong....
+FFx = -A * V ** 2 * sin(V * XX)
 
-FFy = -B * W ** 2 * cos(W * YY) # this is also wrong
+FFy = -B * W ** 2 * cos(W * YY)
 clf();
-subplot(131)
+subplot(133)
 imshow(F, cmap='gray', extent=(-100, 100, -100, 100));
 quiver( yy, xx, FFy, -FFx, color='red')
-subplot(132)
+subplot(131)
 imshow(Fx, cmap='gray')
-subplot(133)
+subplot(132)
 imshow(Fy, cmap='gray')
 
 #imshow(F, cmap=cm.gray)
