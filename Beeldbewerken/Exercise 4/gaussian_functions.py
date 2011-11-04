@@ -1,3 +1,5 @@
+# These are a number of gaussian functions and convolutions.
+# Authors: Jayke Meijer (6049885) and Richard Torenvliet (6138861)
 from scipy.ndimage import convolve, convolve1d
 from pylab import ceil, zeros, pi, e, exp, sqrt, dot, array
 

@@ -1,5 +1,8 @@
+# This program times the 1D and 2D gaussian convolution.
+# Authors: Jayke Meijer (6049885) and Richard Torenvliet (6138861)
 from scipy.ndimage import convolve, convolve1d
-from pylab import figure, show, zeros, average, plot, imread, legend, xlabel, ylabel
+from pylab import figure, show, zeros, average, plot, imread, legend, xlabel, \
+ylabel
 from sys import argv, exit
 from gaussian_functions import gauss, gauss1, f1
 from time import time

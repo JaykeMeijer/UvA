@@ -1,3 +1,5 @@
+# This program is a canny edge detector.
+# Authors: Jayke Meijer (6049885) and Richard Torenvliet (6138861)
 from gaussian_functions import gauss1, f1_1, gD
 from scipy.ndimage import convolve, convolve1d
 from sys import argv, exit

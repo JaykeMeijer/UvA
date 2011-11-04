@@ -1,4 +1,5 @@
-# By Jayke and Richard
+# This program handles a couple of gaussian functions.
+# Authors: Jayke Meijer (6049885) and Richard Torenvliet (6138861)
 from scipy.ndimage import convolve, convolve1d
 from pylab import figure, subplot, imread, zeros, arange, \
 meshgrid, cm, imshow, show

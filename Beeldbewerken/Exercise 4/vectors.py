@@ -1,3 +1,4 @@
+# Authors: Jayke Meijer (6049885) and Richard Torenvliet (6138861)
 from pylab import *
 x = arange(-100,101)
 y = arange(-100,101)

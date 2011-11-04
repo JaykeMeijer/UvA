@@ -1,3 +1,5 @@
+# This program creates the 2-jet of the image
+# Authors: Jayke Meijer (6049885) and Richard Torenvliet (6138861)
 from scipy.ndimage import convolve, convolve1d
 from pylab import figure, show, zeros, average, plot, imread, legend, subplot,\
 imshow, title, delaxes
