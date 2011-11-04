@@ -11,7 +11,8 @@ if len(argv) != 2:
 method = argv[1]
 
 Image = imread('cameraman.png')
-timings = zeros((19))
+timings = zeros((20))
+timings[0] = 0
 temp = zeros((3))
 
 if method == '2D':
@@ -22,7 +23,7 @@ if method == '2D':
             G = convolve(Image, Gs, mode='nearest')
             stop = time()
             temp[j] = stop - start
-        timings[i - 1] = average(temp)
+        timings[i] = average(temp)
 elif method == '1D':
     for i in xrange(1, 20):
         for j in xrange(0,3):

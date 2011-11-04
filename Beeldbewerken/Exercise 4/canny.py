@@ -19,7 +19,8 @@ def canny(F, s, high_threshold, low_threshold):
     for x in xrange(len(G[0])):
         for y in xrange(len(G)):
             G[x][y] = sqrt(Gx[x][y] ** 2 + Gy[x][y] ** 2)
-            angle[x][y] = int(round(arctan2(Gx[x][y], Gy[x][y]) * 4 / pi + 1)) % 4
+            angle[x][y] = int( \
+                    round(arctan2(Gx[x][y], Gy[x][y]) * 4 / pi + 1)) % 4
     
     # Non-maximum suppression
     for x in xrange(len(G[0])):
@@ -48,16 +49,14 @@ def canny(F, s, high_threshold, low_threshold):
     after_threshold = zeros(after_nm.shape, dtype = int)
     
     def follow_edge(x, y):
-        """Follow an edge by checking if the neighbours are in it."""
-        if after_threshold[x][y]:
-            return
-
+        """Follow an edge by recursively checking if the neighbours are in 
+        it."""
         after_threshold[x][y] = 1
 
         for x in xrange(-1, 2):
             for y in xrange(-1, 2):
                 if (not x or not y):
-                    if after_nm[x][y] >= low_threshold:
+                    if after_nm[x][y] >= low_threshold and not after_threshold:
                         follow_edge(x, y)
     
     # Make border pixels zero
@@ -72,7 +71,7 @@ def canny(F, s, high_threshold, low_threshold):
     # Follow each line
     for x in xrange(len(after_nm[0])):
         for y in xrange(len(after_nm)):
-            if after_nm[x][y] >= high_threshold:
+            if after_nm[x][y] >= high_threshold and not after_threshold[x][y]:
                 follow_edge(x, y)
     
     return after_threshold

@@ -1,4 +1,4 @@
-from scipy.ndimage import convolve
+from scipy.ndimage import convolve, convolve1d
 from pylab import ceil, zeros, pi, e, exp, sqrt, dot, array
 
 def f(s, n, x, y):
@@ -72,4 +72,5 @@ def gD(F, s, iorder, jorder):
             
     gaussFilter
     
-    return convolve(F, gaussFilter, mode='nearest')
+    return convolve1d(convolve1d(F, filt_x, axis=0, mode='nearest'), filt_y, axis=1, mode='nearest')
+#    return convolve(F, gaussFilter, mode='nearest')
