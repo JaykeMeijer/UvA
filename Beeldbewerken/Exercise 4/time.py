@@ -16,11 +16,12 @@ method = argv[1]
 Image = imread('cameraman.png')
 timings = zeros((20))
 timings[0] = 0
-temp = zeros((3))
+repeat = 3
+temp = zeros((repeat))
 
 if method == '2D':
     for i in xrange(1, 20):
-        for j in xrange(0,3):
+        for j in xrange(0,repeat):
             start = time()
             Gs = gauss(i)
             G = convolve(Image, Gs, mode='nearest')
@@ -29,14 +30,14 @@ if method == '2D':
         timings[i] = average(temp)
 elif method == '1D':
     for i in xrange(1, 20):
-        for j in xrange(0,3):
+        for j in xrange(0,repeat):
             start = time()
             Gsx = gauss1(i, f1)
             G2 = convolve1d(Image, Gsx, axis=0, mode='nearest')
             G2 = convolve1d(G2, Gsx, axis=1, mode='nearest')
             stop = time()
             temp[j] = stop - start
-        timings[i - 1] = average(temp)
+        timings[i] = average(temp)
 else:
     print 'Invalid method'
     exit(1)
